@@ -1,0 +1,31 @@
+# WIP
+version: 1
+
+connections:
+  operational-mssql:
+    type: mssql
+    host: ${HOST}
+    username: ${USERNAME}
+    password: ${PASSWORD}
+
+  financial-spreadsheets:
+    type: csv
+    path: /tmp/financial-exports
+
+ingest:
+  operational:
+    connection: operational-mssql
+    threads: 4
+    batch_size: 1000
+    tables:
+      - sensors_raw
+      - source: green_eggs
+        target: ham
+      - source: "select age, height, weight from hipaa"
+        target: demographics
+
+  financial:
+    connection: financial-spreadsheets
+    tables:
+      - orders
+    
